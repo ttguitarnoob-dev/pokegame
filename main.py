@@ -22,19 +22,14 @@ pygame.display.set_caption("Hazel's Pokegame")
 background = pygame.image.load('background.png')
 
 
-# function
+# Sprite Classes wooooo let's hope I can make this work as a noob
 
 # Game Loop
-
-running = True
 while True:
-    
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-
 
     # Drawing the Screen
     screen.fill((0, 0, 0))
