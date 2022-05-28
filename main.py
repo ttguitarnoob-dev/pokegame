@@ -26,10 +26,16 @@ background = pygame.image.load('background.png')
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, image, pos_x, pos_y):
-        super.__init__()
-        self.image = image
+        super().__init__()
+        self.image = pygame.image.load(image)
         self.rect = self.image.get_rect()
         self.rect.center = [pos_x, pos_y]
+
+
+# Sprite Groups
+player_sprite = pygame.sprite.Group()
+player = Player('pikachu.png', 100, 100)
+player_sprite.add(player)
         
         
 
@@ -43,6 +49,7 @@ while True:
     # Drawing the Screen
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
+    player_sprite.draw(screen)
     pygame.display.flip()
     clock.tick(60)
 
