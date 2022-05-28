@@ -11,7 +11,7 @@ clock = pygame.time.Clock()
 poke = 'charmander'
 response = requests.get(URL + poke)
 data = response.json()
-image = data['sprites']['other']['official-artwork']['front_default']
+poke_image = data['sprites']['other']['official-artwork']['front_default']
 # print(image)
 
 # Game Window
@@ -25,8 +25,12 @@ background = pygame.image.load('background.png')
 # Sprite Classes wooooo let's hope I can make this work as a noob
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, image, pos_x, pos_y):
         super.__init__()
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.center = [pos_x, pos_y]
+        
         
 
 # Game Loop
