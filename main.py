@@ -24,6 +24,11 @@ background = pygame.image.load('background.png')
 
 # Sprite Classes wooooo let's hope I can make this work as a noob
 
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super.__init__()
+        
+
 # Game Loop
 while True:
     for event in pygame.event.get():
