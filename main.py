@@ -53,6 +53,11 @@ def new_poke(poke):
     with open(filename, 'wb') as f:
         shutil.copyfileobj(dl.raw, f)
     current_poke = filename
+    stats = data['stats']
+    abilities = data['abilities']
+    enemy = Enemy(current_poke, spawn_x, spawn_y, stats, abilities)
+    enemy_sprite.add(enemy)
+    
 
 # Quit Game
 def quit_game():
@@ -99,17 +104,23 @@ class Player(pygame.sprite.Sprite):
 
 # Enemy
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, image, pos_x, pos_y, stats):
+    def __init__(self, image, pos_x, pos_y, stats, abilities):
         super().__init__()
         self.image = pygame.image.load(image)
         self.rect = self.image.get_rect()
         self.rect.center = (pos_x, pos_y)
         self.stats = stats
+        self.abilities = abilities
 
 # Sprite Groups
+
+# Player
 player_sprite = pygame.sprite.Group()
-player = Player('pikachu.png', spawn_x, spawn_y, 5)
+player = Player('player.png', spawn_x, spawn_y, 5)
 player_sprite.add(player)
+
+# Enemy
+enemy_sprite = pygame.sprite.Group()
         
         
 
@@ -122,8 +133,9 @@ while run:
     screen.blit(background, (0, 0))
     player_sprite.draw(screen)
     if current_poke != '':
-        poke_load = pygame.image.load(current_poke)
-        screen.blit(poke_load, dest)
+        enemy_sprite.draw(screen)
+        # poke_load = pygame.image.load(current_poke)
+        # screen.blit(poke_load, dest)
     player.move(moving_left, moving_right, moving_up, moving_down)
     pygame.display.flip()
     clock.tick(60)
