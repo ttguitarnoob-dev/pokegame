@@ -9,6 +9,7 @@ pygame.init()
 clock = pygame.time.Clock()
 poke_list = []
 current_poke = ''
+dest = (200, 200)
 
 # Player Movement Variables
 moving_right = False
@@ -100,8 +101,7 @@ while run:
     player_sprite.draw(screen)
     if current_poke != '':
         poke_load = pygame.image.load(current_poke)
-        screen.blit(poke_load)
-    screen.blit(poke_load)
+        screen.blit(poke_load, dest)
     player.move(moving_left, moving_right, moving_up, moving_down)
     pygame.display.flip()
     clock.tick(60)
@@ -131,7 +131,7 @@ while run:
 
             # Summon poke
             if event.key == pygame.K_t:
-                os.remove(current_poke)
+                # os.remove(current_poke)
                 new_poke(poke_list[random.randrange(len(poke_list))])
 
 
