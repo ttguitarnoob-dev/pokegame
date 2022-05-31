@@ -9,7 +9,7 @@ pygame.init()
 clock = pygame.time.Clock()
 poke_list = []
 current_poke = ''
-dest = (200, 200)
+dest = (100, 100)
 
 # Player Movement Variables
 moving_right = False
@@ -126,12 +126,13 @@ while run:
             
             # Quit Game
             if event.key == pygame.K_ESCAPE:
-                print(poke_list)
+                os.remove(current_poke)
                 run = False
 
             # Summon poke
             if event.key == pygame.K_t:
-                # os.remove(current_poke)
+                if current_poke != '':
+                    os.remove(current_poke)
                 new_poke(poke_list[random.randrange(len(poke_list))])
 
 
