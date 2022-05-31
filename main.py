@@ -1,4 +1,5 @@
-import pygame, sys
+import random
+import pygame, sys, shutil, os
 import requests
 
 # Initialize Pygame
@@ -6,24 +7,47 @@ pygame.init()
 
 # Variables
 clock = pygame.time.Clock()
+poke_list = []
+current_poke = ''
+
 # Player Movement Variables
 moving_right = False
 moving_left = False
 moving_up = False
 moving_down = False
 
-# When searching for a poke, do an api call with URL and concatenate the user inputted name (poke) at the end
-URL = 'https://pokeapi.co/api/v2/pokemon/'
+# Poke list populate
 
-poke = 'dugtrio'
-response = requests.get(URL + poke)
-data = response.json()
-poke_image_url = data['sprites']['other']['official-artwork']['front_default']
-# print(image)
+poke_url = 'https://pokeapi.co/api/v2/pokemon/?limit=770'
+resp = requests.get(poke_url)
+data = resp.json()
+for i in data['results']:
+    poke_list.append(i['name'])
+
+
+# New Poke
+def new_poke(poke):
+    global current_poke
+    URL = 'https://pokeapi.co/api/v2/pokemon/'
+    response = requests.get(URL + poke)
+    data = response.json()
+    poke_image_url = data['sprites']['other']['official-artwork']['front_default']
+    filename = poke + '.png'
+    dl = requests.get(poke_image_url, stream = True)
+    dl.raw.decode_content = True
+    with open(filename, 'wb') as f:
+        shutil.copyfileobj(dl.raw, f)
+    current_poke = filename
+    print('current', current_poke)
+
+# new_poke(poke_list[random.randrange(len(poke_list))])
+
+# New Poke variables
 
 # Game Window
 screen = pygame.display.set_mode((800, 480))
 pygame.display.set_caption("Hazel's Pokegame")
+
 
 # Background
 background = pygame.image.load('background.png')
@@ -74,6 +98,10 @@ while run:
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
     player_sprite.draw(screen)
+    if current_poke != '':
+        poke_load = pygame.image.load(current_poke)
+        screen.blit(poke_load)
+    screen.blit(poke_load)
     player.move(moving_left, moving_right, moving_up, moving_down)
     pygame.display.flip()
     clock.tick(60)
@@ -81,7 +109,6 @@ while run:
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            print(poke_image_url)
             run = False
         
         # Keyboard Events
@@ -99,7 +126,13 @@ while run:
             
             # Quit Game
             if event.key == pygame.K_ESCAPE:
+                print(poke_list)
                 run = False
+
+            # Summon poke
+            if event.key == pygame.K_t:
+                os.remove(current_poke)
+                new_poke(poke_list[random.randrange(len(poke_list))])
 
 
         # Keyboard Release
