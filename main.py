@@ -36,9 +36,9 @@ data = resp.json()
 for i in data['results']:
     poke_list.append(i['name'])
 
- ###########
+#############
 # FUNCTIONS #
- ###########
+#############
 
 # New Poke
 def new_poke(poke):
@@ -50,8 +50,8 @@ def new_poke(poke):
     filename = poke + '.png'
     dl = requests.get(poke_image_url, stream = True)
     dl.raw.decode_content = True
-    with open(filename, 'wb') as f:
-        shutil.copyfileobj(dl.raw, f)
+    with open(filename, 'wb') as file:
+        shutil.copyfileobj(dl.raw, file)
     current_poke = filename
     stats = data['stats']
     abilities = data['abilities']
@@ -123,8 +123,9 @@ player_sprite.add(player)
 enemy_sprite = pygame.sprite.Group()
         
         
-
-# Game Loop
+#############
+# Game Loop #
+#############
 run = True
 while run:
 
