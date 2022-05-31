@@ -11,8 +11,8 @@ poke_list = []
 current_poke = ''
 wind_width = 1255
 wind_height = 900
-spawn_x = random.randrange(wind_height)
-spawn_y = random.randrange(wind_width)
+spawn_x = random.randrange(wind_width)
+spawn_y = random.randrange(wind_height)
 dest = (spawn_x, spawn_y)
 
 # Game Window
