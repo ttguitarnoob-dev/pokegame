@@ -5,7 +5,7 @@ import requests
 pygame.init()
 
 # Variables
-
+clock = pygame.time.Clock()
 # Player Movement Variables
 moving_right = False
 moving_left = False
@@ -14,7 +14,7 @@ moving_down = False
 
 # When searching for a poke, do an api call with URL and concatenate the user inputted name (poke) at the end
 URL = 'https://pokeapi.co/api/v2/pokemon/'
-clock = pygame.time.Clock()
+
 poke = 'dugtrio'
 response = requests.get(URL + poke)
 data = response.json()
