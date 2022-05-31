@@ -40,6 +40,13 @@ def new_poke(poke):
         shutil.copyfileobj(dl.raw, f)
     current_poke = filename
 
+# Quit Game
+def quit_game():
+    global run
+    if current_poke != '':
+        os.remove(current_poke)
+    run = False
+
 
 # Game Window
 screen = pygame.display.set_mode((1255, 900))
@@ -51,7 +58,6 @@ background = pygame.image.load('background.png')
 
 
 # Sprite Classes wooooo let's hope I can make this work as a noob
-
 class Player(pygame.sprite.Sprite):
     def __init__(self, image, pos_x, pos_y, speed):
         super().__init__()
@@ -64,7 +70,6 @@ class Player(pygame.sprite.Sprite):
         # Movement Variables
         dx = 0
         dy = 0
-
 
         # Assign movement left or right up or down
         if moving_left:
@@ -102,10 +107,10 @@ while run:
     pygame.display.flip()
     clock.tick(60)
 
-    
+    # Events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run = False
+            quit_game()
         
         # Keyboard Events
         if event.type == pygame.KEYDOWN:
@@ -122,8 +127,7 @@ while run:
             
             # Quit Game
             if event.key == pygame.K_ESCAPE:
-                os.remove(current_poke)
-                run = False
+                quit_game()
 
             # Summon poke
             if event.key == pygame.K_t:
