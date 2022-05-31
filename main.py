@@ -9,11 +9,13 @@ pygame.init()
 # Player Movement Variables
 moving_right = False
 moving_left = False
+moving_up = False
+moving_down = False
 
-# When searching for a poke, do an api call with URL and concatenate the user inputted name at the end
+# When searching for a poke, do an api call with URL and concatenate the user inputted name (poke) at the end
 URL = 'https://pokeapi.co/api/v2/pokemon/'
 clock = pygame.time.Clock()
-poke = 'charmander'
+poke = 'dugtrio'
 response = requests.get(URL + poke)
 data = response.json()
 poke_image_url = data['sprites']['other']['official-artwork']['front_default']
@@ -37,17 +39,21 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (pos_x, pos_y)
 
-    def move(self, moving_left, moving_right):
+    def move(self, moving_left, moving_right, moving_up, moving_down):
         # Movement Variables
         dx = 0
         dy = 0
 
 
-        # Assign movement left or right
+        # Assign movement left or right up or down
         if moving_left:
             dx = -self.speed
         if moving_right:
             dx = self.speed
+        if moving_up:
+            dy = -self.speed
+        if moving_down:
+            dy = self.speed
 
         # Update rectangle position
         self.rect.x += dx
@@ -68,13 +74,14 @@ while run:
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
     player_sprite.draw(screen)
-    player.move(moving_left, moving_right)
+    player.move(moving_left, moving_right, moving_up, moving_down)
     pygame.display.flip()
     clock.tick(60)
 
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            print(poke_image_url)
             run = False
         
         # Keyboard Events
@@ -85,6 +92,10 @@ while run:
                 moving_left = True
             if event.key == pygame.K_RIGHT:
                 moving_right = True
+            if event.key == pygame.K_UP:
+                moving_up = True
+            if event.key == pygame.K_DOWN:
+                moving_down = True
             
             # Quit Game
             if event.key == pygame.K_ESCAPE:
@@ -99,6 +110,10 @@ while run:
                 moving_left = False
             if event.key == pygame.K_RIGHT:
                 moving_right = False
+            if event.key == pygame.K_UP:
+                moving_up = False
+            if event.key == pygame.K_DOWN:
+                moving_down = False
 
 
     
