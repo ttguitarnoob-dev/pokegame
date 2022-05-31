@@ -9,8 +9,19 @@ pygame.init()
 clock = pygame.time.Clock()
 poke_list = []
 current_poke = ''
-dest = (100, 100)
+wind_width = 1255
+wind_height = 900
+spawn_x = random.randrange(wind_height)
+spawn_y = random.randrange(wind_width)
+dest = (spawn_x, spawn_y)
 
+# Game Window
+screen = pygame.display.set_mode((wind_width, wind_height))
+pygame.display.set_caption("Hazel's Pokegame")
+
+
+# Background
+background = pygame.image.load('background.png')
 # Player Movement Variables
 moving_right = False
 moving_left = False
@@ -25,6 +36,9 @@ data = resp.json()
 for i in data['results']:
     poke_list.append(i['name'])
 
+ ###########
+# FUNCTIONS #
+ ###########
 
 # New Poke
 def new_poke(poke):
@@ -48,16 +62,14 @@ def quit_game():
     run = False
 
 
-# Game Window
-screen = pygame.display.set_mode((1255, 900))
-pygame.display.set_caption("Hazel's Pokegame")
 
 
-# Background
-background = pygame.image.load('background.png')
 
+#################
+# SPRITE CLASSES #
+ ################
 
-# Sprite Classes wooooo let's hope I can make this work as a noob
+# Player
 class Player(pygame.sprite.Sprite):
     def __init__(self, image, pos_x, pos_y, speed):
         super().__init__()
@@ -85,9 +97,18 @@ class Player(pygame.sprite.Sprite):
         self.rect.x += dx
         self.rect.y += dy
 
+# Enemy
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, image, pos_x, pos_y, stats):
+        super().__init__()
+        self.image = pygame.image.load(image)
+        self.rect = self.image.get_rect()
+        self.rect.center = (pos_x, pos_y)
+        self.stats = stats
+
 # Sprite Groups
 player_sprite = pygame.sprite.Group()
-player = Player('pikachu.png', 100, 100, 5)
+player = Player('pikachu.png', spawn_x, spawn_y, 5)
 player_sprite.add(player)
         
         
