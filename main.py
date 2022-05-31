@@ -30,16 +30,32 @@ background = pygame.image.load('background.png')
 # Sprite Classes wooooo let's hope I can make this work as a noob
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image, pos_x, pos_y):
+    def __init__(self, image, pos_x, pos_y, speed):
         super().__init__()
+        self.speed = speed
         self.image = pygame.image.load(image)
         self.rect = self.image.get_rect()
-        self.rect.center = [pos_x, pos_y]
+        self.rect.center = (pos_x, pos_y)
 
+    def move(self, moving_left, moving_right):
+        # Movement Variables
+        dx = 0
+        dy = 0
+
+
+        # Assign movement left or right
+        if moving_left:
+            dx = -self.speed
+        if moving_right:
+            dx = self.speed
+
+        # Update rectangle position
+        self.rect.x += dx
+        self.rect.y += dy
 
 # Sprite Groups
 player_sprite = pygame.sprite.Group()
-player = Player('pikachu.png', 100, 100)
+player = Player('pikachu.png', 100, 100, 5)
 player_sprite.add(player)
         
         
@@ -52,6 +68,7 @@ while run:
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
     player_sprite.draw(screen)
+    player.move(moving_left, moving_right)
     pygame.display.flip()
     clock.tick(60)
 
@@ -63,7 +80,7 @@ while run:
         # Keyboard Events
         if event.type == pygame.KEYDOWN:
 
-            # Keyboard Press
+            # Player Movement
             if event.key == pygame.K_LEFT:
                 moving_left = True
             if event.key == pygame.K_RIGHT:
@@ -74,9 +91,10 @@ while run:
                 run = False
 
 
-
         # Keyboard Release
         if event.type == pygame.KEYUP:
+
+            # Player Movement
             if event.key == pygame.K_LEFT:
                 moving_left = False
             if event.key == pygame.K_RIGHT:
