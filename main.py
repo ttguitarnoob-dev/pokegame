@@ -39,14 +39,10 @@ def new_poke(poke):
     with open(filename, 'wb') as f:
         shutil.copyfileobj(dl.raw, f)
     current_poke = filename
-    print('current', current_poke)
 
-# new_poke(poke_list[random.randrange(len(poke_list))])
-
-# New Poke variables
 
 # Game Window
-screen = pygame.display.set_mode((800, 480))
+screen = pygame.display.set_mode((1255, 900))
 pygame.display.set_caption("Hazel's Pokegame")
 
 
