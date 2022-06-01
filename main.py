@@ -64,6 +64,7 @@ def quit_game():
     global run
     if current_poke != '':
         os.remove(current_poke)
+    print('Thanks for playing!')
     run = False
 
 
