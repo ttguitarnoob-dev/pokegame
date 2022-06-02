@@ -130,7 +130,9 @@ class Enemy(pygame.sprite.Sprite):
         self.kill()
     
     def display_stats(self):
-        enemy_stats.append(f"{str(self.stats[0]['stat']['name']).upper()}: {str(self.stats[0]['base_stat'])}")
+        for stat in self.stats:
+            enemy_stats.append(f"{str(stat['stat']['name']).capitalize()}: {str(stat['base_stat'])}")
+        # enemy_stats.append(f"{str(self.stats[0]['stat']['name']).upper()}: {str(self.stats[0]['base_stat'])}")
         enemy_stats.append(self.name.capitalize())
 
 
