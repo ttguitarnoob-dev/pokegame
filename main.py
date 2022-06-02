@@ -5,10 +5,14 @@ import requests
 # Initialize Pygame
 pygame.init()
 
-# Variables
+#############
+# Variables #
+#############
+
+# Global
 clock = pygame.time.Clock()
 poke_list = []
-current_poke = ''
+current_poke = None
 wind_width = 1255
 wind_height = 900
 spawn_x = random.randrange(wind_width)
@@ -17,6 +21,7 @@ dest = (spawn_x, spawn_y)
 black = pygame.color.Color('#000000')
 font = pygame.font.Font(None, 40)
 message = 'Pikachu is here'
+enemy_stats = []
 
 
 # Game Window
@@ -46,7 +51,7 @@ for i in data['results']:
 
 # New Poke
 def new_poke(poke):
-    global current_poke, enemy
+    global current_poke, enemy, enemy_stats
     URL = 'https://pokeapi.co/api/v2/pokemon/'
     response = requests.get(URL + poke)
     data = response.json()
@@ -62,6 +67,7 @@ def new_poke(poke):
     name = data['name']
     enemy = Enemy(current_poke, spawn_x, spawn_y, stats, abilities, name)
     enemy_sprite.add(enemy)
+    enemy_stats = []
     enemy.display_stats()
     
 
@@ -124,14 +130,14 @@ class Enemy(pygame.sprite.Sprite):
         self.kill()
     
     def display_stats(self):
-        black = pygame.color.Color('#000000')
-        font = pygame.font.Font(None, 40)
-        text = font.render(self.name, True, black)
-        screen.blit(text, (0, 0))
-        print(self.name)
-        
+        enemy_stats.append(f"{str(self.stats[0]['stat']['name'])}: {str(self.stats[0]['base_stat'])}")
+        enemy_stats.append(self.name.capitalize())
+        print(self.stats[0])
 
-# Sprite Groups
+
+#################
+# Sprite Groups #
+#################
 
 # Player
 player_sprite = pygame.sprite.Group()
@@ -141,7 +147,6 @@ player_sprite.add(player)
 # Enemy
 enemy_sprite = pygame.sprite.Group()
 enemy = None
-
         
         
 #############
@@ -154,12 +159,14 @@ while run:
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
     player_sprite.draw(screen)
-    if current_poke != '':
+    if current_poke != None:
         enemy_sprite.draw(screen)
-        # poke_load = pygame.image.load(current_poke)
-        # screen.blit(poke_load, dest)
-        
-        
+        bottom = 5
+        for i in enemy_stats:
+            bottom += 30
+            text = font.render(i, True, black)
+            screen.blit(text, (30, wind_height - bottom))
+
     player.move(moving_left, moving_right, moving_up, moving_down)
     pygame.display.flip()
     clock.tick(60)
@@ -188,9 +195,8 @@ while run:
 
             # Summon poke
             if event.key == pygame.K_t:
-                if current_poke != '':
-                    
-                    enemy.kill()
+                if current_poke != None:
+                    enemy.dead()
                     os.remove(current_poke)
                 new_poke(poke_list[random.randrange(len(poke_list))])
 
