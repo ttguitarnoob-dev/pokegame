@@ -130,9 +130,9 @@ class Enemy(pygame.sprite.Sprite):
         self.kill()
     
     def display_stats(self):
-        enemy_stats.append(f"{str(self.stats[0]['stat']['name'])}: {str(self.stats[0]['base_stat'])}")
+        enemy_stats.append(f"{str(self.stats[0]['stat']['name']).upper()}: {str(self.stats[0]['base_stat'])}")
         enemy_stats.append(self.name.capitalize())
-        print(self.stats[0])
+
 
 
 #################
@@ -141,7 +141,7 @@ class Enemy(pygame.sprite.Sprite):
 
 # Player
 player_sprite = pygame.sprite.Group()
-player = Player('player.png', spawn_x, spawn_y, 5)
+player = Player('player.png', spawn_x, spawn_y, 7)
 player_sprite.add(player)
 
 # Enemy
