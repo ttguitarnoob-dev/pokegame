@@ -50,8 +50,8 @@ def new_poke(poke):
     filename = poke + '.png'
     dl = requests.get(poke_image_url, stream = True)
     dl.raw.decode_content = True
-    with open(filename, 'wb') as file:
-        shutil.copyfileobj(dl.raw, file)
+    with open(filename, 'wb') as filex:
+        shutil.copyfileobj(dl.raw, filex)
     current_poke = filename
     stats = data['stats']
     abilities = data['abilities']
@@ -112,6 +112,9 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = (pos_x, pos_y)
         self.stats = stats
         self.abilities = abilities
+    
+    def dead(self):
+        self.kill()
 
 # Sprite Groups
 
@@ -168,6 +171,7 @@ while run:
             if event.key == pygame.K_t:
                 if current_poke != '':
                     os.remove(current_poke)
+                    
                 new_poke(poke_list[random.randrange(len(poke_list))])
 
 
