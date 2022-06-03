@@ -68,7 +68,7 @@ def new_poke(poke):
     enemy_sprite.add(enemy)
     enemy_stats = []
     enemy.display_stats()
-    
+    # do 20 second timer then remove the enemy then wait 5 seconds then call the newpoke function again
 
 # Quit Game
 def quit_game():
