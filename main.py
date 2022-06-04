@@ -14,12 +14,8 @@ poke_list = []
 current_poke = None
 wind_width = 1255
 wind_height = 900
-spawn_x = random.randrange(wind_width) + 200
-spawn_y = random.randrange(wind_height) + 200
-dest = (spawn_x, spawn_y)
 black = pygame.color.Color('#000000')
 font = pygame.font.Font(None, 40)
-message = 'Pikachu is here'
 enemy_stats = []
 start = pygame.time.get_ticks()
 
