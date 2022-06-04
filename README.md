@@ -1,5 +1,5 @@
-# pokegame
-
+# Pokegame
+Silly Pokemon Game
 - 
 run this code at startup to populate a list of all pokemon names from the api:
 

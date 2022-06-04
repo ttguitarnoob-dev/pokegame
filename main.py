@@ -146,7 +146,6 @@ class Enemy(pygame.sprite.Sprite):
             dx = -speed
         if moving_right:
             dx = speed
-            print(speed)
         
         # Update Rectangle Position
         self.rect.x += dx
@@ -179,6 +178,8 @@ while run:
     screen.blit(background, (0, 0))
     player_sprite.draw(screen)
     now = pygame.time.get_ticks()
+
+    # Enemy Render, Movement and Stat Display
     if current_poke != None:
         enemy_sprite.draw(screen)
         enemy.move(enemy_left, enemy_right)
