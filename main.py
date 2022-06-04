@@ -33,6 +33,10 @@ moving_left = False
 moving_up = False
 moving_down = False
 
+# Enemy Movement Variables
+enemy_left = False
+enemy_right = True
+
 # Poke list populate
 poke_url = 'https://pokeapi.co/api/v2/pokemon/?limit=600'
 resp = requests.get(poke_url)
@@ -130,9 +134,23 @@ class Enemy(pygame.sprite.Sprite):
             enemy_stats.append(f"{str(stat['stat']['name']).capitalize()}: {str(stat['base_stat'])}")
         enemy_stats.append(self.name.capitalize())
 
-    def move(self):
-        speed = self.stats[5]['base_stat']
-        print(speed)
+    def move(self, moving_left, moving_right):
+        speed = int(self.stats[5]['base_stat'] / 11)
+
+        # Movement Variables
+        dx = 0
+        dy = 0
+
+        # Assign Movement Left or Right
+        if moving_left:
+            dx = -speed
+        if moving_right:
+            dx = speed
+            print(speed)
+        
+        # Update Rectangle Position
+        self.rect.x += dx
+        
 
 
 
@@ -163,8 +181,14 @@ while run:
     now = pygame.time.get_ticks()
     if current_poke != None:
         enemy_sprite.draw(screen)
-        enemy.move()
+        enemy.move(enemy_left, enemy_right)
         bottom = 5
+        if enemy.rect.x >= wind_width - 450:
+            enemy_left = True
+            enemy_right = False
+        if enemy.rect.x <= wind_width - 1290:
+            enemy_left = False
+            enemy_right = True
         for i in enemy_stats:
             bottom += 30
             text = font.render(i, True, black)
