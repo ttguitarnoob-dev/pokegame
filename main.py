@@ -14,8 +14,8 @@ poke_list = []
 current_poke = None
 wind_width = 1255
 wind_height = 900
-spawn_x = random.randrange(wind_width)
-spawn_y = random.randrange(wind_height)
+spawn_x = random.randrange(wind_width) + 200
+spawn_y = random.randrange(wind_height) + 200
 dest = (spawn_x, spawn_y)
 black = pygame.color.Color('#000000')
 font = pygame.font.Font(None, 40)
@@ -65,7 +65,7 @@ def new_poke(poke):
     stats = data['stats']
     abilities = data['abilities']
     name = data['name']
-    enemy = Enemy(current_poke, spawn_x, spawn_y, stats, abilities, name)
+    enemy = Enemy(current_poke, random.randrange(200, 1100), random.randrange(200, 400), stats, abilities, name)
     enemy_sprite.add(enemy)
     enemy_stats = []
     enemy.display_stats()
@@ -150,7 +150,7 @@ class Enemy(pygame.sprite.Sprite):
 
 # Player
 player_sprite = pygame.sprite.Group()
-player = Player('player.png', spawn_x, spawn_y, 7)
+player = Player('player.png', 1000, 500, 7)
 player_sprite.add(player)
 
 # Enemy
