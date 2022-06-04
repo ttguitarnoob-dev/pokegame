@@ -1,4 +1,4 @@
-import pygame, sys, shutil, os, random, requests
+import pygame, sys, shutil, os, random, requests, time
 
 
 # Initialize Pygame
@@ -21,6 +21,7 @@ black = pygame.color.Color('#000000')
 font = pygame.font.Font(None, 40)
 message = 'Pikachu is here'
 enemy_stats = []
+start = pygame.time.get_ticks()
 
 
 # Game Window
@@ -69,6 +70,11 @@ def new_poke(poke):
     enemy_stats = []
     enemy.display_stats()
     # do 20 second timer then remove the enemy then wait 5 seconds then call the newpoke function again
+    # time.sleep(20)
+    # enemy.dead()
+    # os.remove(current_poke)
+    # time.sleep(4)
+    # new_poke(poke_list[random.randrange(len(poke_list))])
 
 # Quit Game
 def quit_game():
@@ -126,7 +132,10 @@ class Enemy(pygame.sprite.Sprite):
         self.name = name
     
     def dead(self):
+        global current_poke
         self.kill()
+        os.remove(current_poke)
+        current_poke = None
     
     def display_stats(self):
         for stat in self.stats:
@@ -170,6 +179,18 @@ while run:
     player.move(moving_left, moving_right, moving_up, moving_down)
     pygame.display.flip()
     clock.tick(60)
+
+    # Spawn Enemies
+    now = pygame.time.get_ticks()
+    if current_poke != None:
+        if now - start > 8000:
+            start = now
+            enemy.dead()
+    else:
+        if now - start > 4000:
+            start = now
+            new_poke(poke_list[random.randrange(len(poke_list))])
+            
 
     # Events
     for event in pygame.event.get():
