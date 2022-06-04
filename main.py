@@ -17,16 +17,16 @@ wind_height = 900
 black = pygame.color.Color('#000000')
 font = pygame.font.Font(None, 40)
 enemy_stats = []
-start = pygame.time.get_ticks()
-
+spawn_timer = pygame.time.get_ticks()
+move_timer = pygame.time.get_ticks()
 
 # Game Window
 screen = pygame.display.set_mode((wind_width, wind_height))
 pygame.display.set_caption("Hazel's Pokegame")
 
-
 # Background
 background = pygame.image.load('background.png')
+
 # Player Movement Variables
 moving_right = False
 moving_left = False
@@ -34,8 +34,7 @@ moving_up = False
 moving_down = False
 
 # Poke list populate
-
-poke_url = 'https://pokeapi.co/api/v2/pokemon/?limit=770'
+poke_url = 'https://pokeapi.co/api/v2/pokemon/?limit=600'
 resp = requests.get(poke_url)
 data = resp.json()
 for i in data['results']:
@@ -65,12 +64,7 @@ def new_poke(poke):
     enemy_sprite.add(enemy)
     enemy_stats = []
     enemy.display_stats()
-    # do 20 second timer then remove the enemy then wait 5 seconds then call the newpoke function again
-    # time.sleep(20)
-    # enemy.dead()
-    # os.remove(current_poke)
-    # time.sleep(4)
-    # new_poke(poke_list[random.randrange(len(poke_list))])
+    
 
 # Quit Game
 def quit_game():
@@ -79,9 +73,6 @@ def quit_game():
         os.remove(current_poke)
     print('Thanks for playing!')
     run = False
-
-
-
 
 
 #################
@@ -98,6 +89,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = (pos_x, pos_y)
 
     def move(self, moving_left, moving_right, moving_up, moving_down):
+
         # Movement Variables
         dx = 0
         dy = 0
@@ -138,6 +130,10 @@ class Enemy(pygame.sprite.Sprite):
             enemy_stats.append(f"{str(stat['stat']['name']).capitalize()}: {str(stat['base_stat'])}")
         enemy_stats.append(self.name.capitalize())
 
+    def move(self):
+        speed = self.stats[5]['base_stat']
+        print(speed)
+
 
 
 #################
@@ -164,8 +160,10 @@ while run:
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
     player_sprite.draw(screen)
+    now = pygame.time.get_ticks()
     if current_poke != None:
         enemy_sprite.draw(screen)
+        enemy.move()
         bottom = 5
         for i in enemy_stats:
             bottom += 30
@@ -177,14 +175,13 @@ while run:
     clock.tick(60)
 
     # Spawn Enemies
-    now = pygame.time.get_ticks()
     if current_poke != None:
-        if now - start > 8000:
-            start = now
+        if now - spawn_timer > 8000:
+            spawn_timer = now
             enemy.dead()
     else:
-        if now - start > 4000:
-            start = now
+        if now - spawn_timer > 4000:
+            spawn_timer = now
             new_poke(poke_list[random.randrange(len(poke_list))])
             
 
@@ -210,12 +207,11 @@ while run:
             if event.key == pygame.K_ESCAPE:
                 quit_game()
 
-            # Summon poke
+            # test enemy functions
             if event.key == pygame.K_t:
                 if current_poke != None:
-                    enemy.dead()
-                    os.remove(current_poke)
-                new_poke(poke_list[random.randrange(len(poke_list))])
+                    enemy.move()
+                
 
 
         # Keyboard Release
