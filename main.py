@@ -190,9 +190,9 @@ while run:
         if enemy.rect.x <= wind_width - 1290:
             enemy_left = False
             enemy_right = True
-        for i in enemy_stats:
+        for stat in enemy_stats:
             bottom += 30
-            text = font.render(i, True, black)
+            text = font.render(stat, True, black)
             screen.blit(text, (30, wind_height - bottom))
 
     player.move(moving_left, moving_right, moving_up, moving_down)
